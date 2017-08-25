@@ -186,9 +186,6 @@ namespace ValueConversion.UI.Droid
 			// aapt resource value: 0x7f040001
 			public const int MvxBindingTagUnique = 2130968577;
 			
-			// aapt resource value: 0x7f040011
-			public const int MyButton = 2130968593;
-			
 			// aapt resource value: 0x7f040006
 			public const int dialog_BoolField = 2130968582;
 			
