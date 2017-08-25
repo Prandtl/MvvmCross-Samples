@@ -2,55 +2,53 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Core.Navigation;
 
 namespace ValueConversion.Core.ViewModels
 {
     public class HomeViewModel : MvxViewModel
     {
-        public HomeViewModel()
+        private IMvxNavigationService _navigationService;
+
+        public HomeViewModel(IMvxNavigationService navigationService)
         {
+
             Items = new List<MenuItem>
                 {
-                    new MenuItem<StringsViewModel>(this),
-                    new MenuItem<DatesViewModel>(this),
-                    new MenuItem<ColorsViewModel>(this),
-                    new MenuItem<VisibilityViewModel>(this),
-                    new MenuItem<TwoWayViewModel>(this),
+                    new MenuItem(new StringsViewModel(), this),
+                    new MenuItem(new DatesViewModel(), this),
+                    new MenuItem(new ColorsViewModel(), this),
+                    new MenuItem(new VisibilityViewModel(), this),
+                    new MenuItem(new TwoWayViewModel(), this),
                 };
+
+            _navigationService = navigationService;
         }
 
         public List<MenuItem> Items { get; private set; }
 
-        private void Show(Type viewModelType)
+        private void Show(IMvxViewModel viewModel)
         {
-            ShowViewModel(viewModelType);
+            _navigationService.Navigate(viewModel);
         }
 
         public class MenuItem
         {
             private readonly HomeViewModel _parent;
 
-            public MenuItem(Type viewModelType, HomeViewModel parent)
+            public MenuItem(IMvxViewModel viewModel, HomeViewModel parent)
             {
-                Name = viewModelType.Name.Replace("ViewModel", "");
-                ViewModelType = viewModelType;
+                Name = viewModel.GetType().Name.Replace("ViewModel", "");
+                ViewModel = viewModel;
                 _parent = parent;
             }
 
             public string Name { get; private set; }
-            public Type ViewModelType { get; private set; }
+            public IMvxViewModel ViewModel { get; private set; }
 
             public ICommand ShowCommand
             {
-                get { return new MvxCommand(() => _parent.Show(ViewModelType)); }
-            }
-        }
-
-        public class MenuItem<TViewModel> : MenuItem
-        {
-            public MenuItem(HomeViewModel parent)
-                : base(typeof(TViewModel), parent)
-            {
+                get { return new MvxCommand(() => _parent.Show(ViewModel)); }
             }
         }
     }

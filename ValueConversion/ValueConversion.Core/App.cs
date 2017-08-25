@@ -1,5 +1,6 @@
 ﻿using ValueConversion.Core.ViewModels;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Platform.IoC;
 
 namespace ValueConversion.Core
 {
@@ -7,6 +8,11 @@ namespace ValueConversion.Core
     {
         public override void Initialize()
         {
+            CreatableTypes()
+                .EndingWith("Service")
+                .AsInterfaces()
+                .RegisterAsLazySingleton();
+
             RegisterAppStart<HomeViewModel>();
         }
     }

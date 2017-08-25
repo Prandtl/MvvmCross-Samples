@@ -66,8 +66,7 @@ namespace ValueConversion.Core.Converters
         }
     }
 
-    public class TimeAgoConverter
-        : MvxValueConverter<DateTime>
+    public class TimeAgoConverter : MvxValueConverter<DateTime>
     {
         protected override object Convert(DateTime when, Type targetType, object parameter, CultureInfo culture)
         {
